@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shimmer_container_banner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_card_ads"
+    app:shimmer_auto_start="true"
+    app:shimmer_base_color="#ccc">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="250dip"
+        android:background="@color/lightTransparent">
+
+        <TextView
+            style="@style/AppTheme.Ads"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+</com.facebook.shimmer.ShimmerFrameLayout>

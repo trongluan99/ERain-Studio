@@ -1,0 +1,98 @@
+plugins {
+    id 'com.android.application'
+}
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.erain.module'
+    compileSdkVersion 34
+    defaultConfig {
+        applicationId "com.erain.module"
+        minSdkVersion 24
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+        def formattedDate = new Date().format('MMM.dd.yyyy')
+        archivesBaseName = "ERainStudio_v${versionName}(${versionCode})_${formattedDate}"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions "default"
+
+    productFlavors {
+        appDev {
+            //use id test when dev
+            manifestPlaceholders = [ad_app_id: "ca-app-pub-3940256099942544~3347511713"]
+            buildConfigField "String", "ad_interstitial_splash", "\"ca-app-pub-3940256099942544/1033173712\""
+            buildConfigField "String", "ad_banner", "\"ca-app-pub-3940256099942544/9214589741\""
+            buildConfigField "String", "ad_reward", "\"ca-app-pub-3940256099942544/5224354917\""
+            buildConfigField "String", "ad_reward_inter", "\"ca-app-pub-3940256099942544/5354046379\""
+            buildConfigField "String", "ad_appopen_resume", "\"ca-app-pub-3940256099942544/9257395921\""
+            buildConfigField "String", "ad_native", "\"ca-app-pub-3940256099942544/2247696110\""
+            buildConfigField "String", "ads_open_app", "\"ca-app-pub-3940256099942544/3419835294\""
+
+            buildConfigField "String", "Test_Inter", "\"54234b223e3dfdfa\""
+            buildConfigField "String", "Test_Native", "\"9985fc9e89cd4704\""
+            buildConfigField "String", "Test_Banner", "\"9985fc9e89cd4704\""
+            buildConfigField "String", "Test_Appopenad", "\"f5d425c65f92c24a\""
+            buildConfigField "Boolean", "env_dev", "true"
+
+        }
+        appProd {
+            //add your id ad here
+            manifestPlaceholders = [ad_app_id: "ca-app-pub-3940256099942544~3347511713"]
+            buildConfigField "String", "ad_interstitial_splash", "\"ca-app-pub-3940256099942544/1033173712\""
+            buildConfigField "String", "ad_banner", "\"ca-app-pub-3940256099942544/9214589741\""
+            buildConfigField "String", "ad_reward", "\"ca-app-pub-3940256099942544/5224354917\""
+            buildConfigField "String", "ad_reward_inter", "\"ca-app-pub-3940256099942544/5354046379\""
+            buildConfigField "String", "ad_appopen_resume", "\"ca-app-pub-3940256099942544/9257395921\""
+            buildConfigField "String", "ad_native", "\"ca-app-pub-3940256099942544/2247696110\""
+            buildConfigField "String", "ad_native", "\"ca-app-pub-3940256099942544/3419835294\""
+            buildConfigField "String", "ads_open_app", "\"ca-app-pub-3940256099942544/3419835294\""
+            buildConfigField "Boolean", "env_dev", "false"
+
+
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation project(path: ':ads')
+    implementation 'com.google.android.gms:play-services-ads:24.1.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.work:work-runtime-ktx:2.8.0'
+
+    implementation 'com.google.android.play:review:2.0.1'
+    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation project(path: ':iauModule')
+
+}
+repositories {
+    mavenCentral()
+}
