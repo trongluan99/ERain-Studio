@@ -1,4 +1,3 @@
 include ':ads'
 include ':app'
 rootProject.name = "ERain-Studio"
-include ':iauModule'

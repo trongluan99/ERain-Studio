@@ -9,6 +9,7 @@
     <string name="buy_now">Buy now</string>
     <string name="loading_ads">Ads Loading…</string>
     <string name="well_comeback">Welcome back</string>
+    <string name="text_update_content">We recommend that you update to the latest version. We’ve fixed some minor bugs to provide you with the best experience possible. New fascinating features are in development!</string>
 
     <string-array name="list_id_test">
         <!--        app open-->

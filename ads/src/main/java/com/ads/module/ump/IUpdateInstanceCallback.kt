@@ -1,4 +1,4 @@
-package com.itg.iaumodule
+package com.ads.module.ump
 
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.install.model.AppUpdateType

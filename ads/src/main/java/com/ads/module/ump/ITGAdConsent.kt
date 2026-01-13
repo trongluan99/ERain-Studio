@@ -1,4 +1,4 @@
-package com.itg.iaumodule
+package com.ads.module.ump
 
 import android.content.Context
 import android.preference.PreferenceManager

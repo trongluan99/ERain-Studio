@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.module.ads.ERainAd;
 import com.ads.module.funtion.AdCallback;
+import com.ads.module.ump.IAdConsentCallBack;
+import com.ads.module.ump.ITGAdConsent;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.FormError;
-import com.itg.iaumodule.IAdConsentCallBack;
-import com.itg.iaumodule.ITGAdConsent;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {

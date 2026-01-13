@@ -1,4 +1,4 @@
-package com.itg.iaumodule
+package com.ads.module.ump
 
 import android.app.Activity
 import android.util.Log
