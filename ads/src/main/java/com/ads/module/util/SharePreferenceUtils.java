@@ -18,6 +18,8 @@ public class SharePreferenceUtils {
 
     private final static String KEY_LAST_IMPRESSION_INTERSTITIAL_TIME = "KEY_LAST_IMPRESSION_INTERSTITIAL_TIME";
 
+    private final static String KEY_IS_ORGANIC = "KEY_IS_ORGANIC";
+
     public static long getInstallTime(Context context) {
         SharedPreferences pre = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return pre.getLong(KEY_INSTALL_TIME, 0);
@@ -78,5 +80,15 @@ public class SharePreferenceUtils {
     public static void setLastImpressionInterstitialTime(Context context) {
         SharedPreferences pre = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         pre.edit().putLong(KEY_LAST_IMPRESSION_INTERSTITIAL_TIME, System.currentTimeMillis()).apply();
+    }
+
+    public static boolean getIsOrganic(Context context) {
+        SharedPreferences pre = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return pre.getBoolean(KEY_IS_ORGANIC, false);
+    }
+
+    public static void setIsOrganic(Context context, boolean isOrganic) {
+        SharedPreferences pre = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        pre.edit().putBoolean(KEY_IS_ORGANIC, isOrganic).apply();
     }
 }

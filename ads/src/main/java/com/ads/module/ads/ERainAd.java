@@ -46,7 +46,6 @@ public class ERainAd {
     private ERainAdConfig adConfig;
     private ERainInitCallback initCallback;
     private Boolean initAdSuccess = false;
-    private Boolean isOrganic = false;
 
     public static synchronized ERainAd getInstance() {
         if (INSTANCE == null) {
@@ -60,31 +59,31 @@ public class ERainAd {
     }
 
     public Boolean getOrganic() {
-        return isOrganic;
+        return SharePreferenceUtils.getIsOrganic(adConfig.getApplication());
     }
 
     public Boolean getShouldDisplayInterOnboarding() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull1() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull2() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboarding2() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public Boolean getShouldDisplayWidgetUninstall() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public Boolean getShouldDisplayHighCTA() {
-        return !isOrganic;
+        return !getOrganic();
     }
 
     public void setCountClickToShowAds(int countClickToShowAds) {
@@ -129,8 +128,9 @@ public class ERainAd {
         config.enablePreinstallTracking();
         config.enableSendingInBackground();
         config.setOnAttributionChangedListener(adjustAttribution -> {
-            isOrganic = "Organic".equals(adjustAttribution.trackerName) ||
+            boolean organic = "Organic".equals(adjustAttribution.trackerName) ||
                     (adjustAttribution.network != null && adjustAttribution.network.equalsIgnoreCase("organic"));
+            SharePreferenceUtils.setIsOrganic(adConfig.getApplication(), organic);
         });
         Adjust.initSdk(config);
         adConfig.getApplication().registerActivityLifecycleCallbacks(new AdjustLifecycleCallbacks());
