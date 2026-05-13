@@ -106,4 +106,15 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ERainAd.getInstance().onCheckShowSplashWhenFail(this, new AdCallback(){
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                // next activity
+            }
+        }, 1000);
+    }
 }
