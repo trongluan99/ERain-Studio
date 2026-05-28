@@ -62,7 +62,7 @@ public class ERainAd {
         return SharePreferenceUtils.getIsOrganic(adConfig.getApplication());
     }
 
-    public Boolean getShouldDisplayInterOnboarding() {
+    public Boolean getShouldDisplayNativeOnboardingNormal1() {
         return !getOrganic();
     }
 
@@ -74,9 +74,30 @@ public class ERainAd {
         return !getOrganic();
     }
 
-    public Boolean getShouldDisplayNativeOnboarding2() {
+    public Boolean getShouldDisplayNativeOnboardingNormal2() {
         return !getOrganic();
     }
+
+    public Boolean getShouldDisplayNativeHome() {
+        return !getOrganic();
+    }
+
+    public Boolean getShouldDisplayNativePermission() {
+        return !getOrganic();
+    }
+
+    public Boolean getShouldDisplayInterOnboarding() {
+        return !getOrganic();
+    }
+
+    public Boolean getShouldDisplayNativeWelcomeBack() {
+        return !getOrganic();
+    }
+
+    public Boolean getShouldDisplayInterWelcomeBack() {
+        return !getOrganic();
+    }
+
 
     public Boolean getShouldDisplayWidgetUninstall() {
         return !getOrganic();
