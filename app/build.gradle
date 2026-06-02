@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android'
 
 android {
     namespace 'com.erain.module'
-    compileSdkVersion 34
+    compileSdkVersion 36
     defaultConfig {
         applicationId "com.erain.module"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
         def formattedDate = new Date().format('MMM.dd.yyyy')
@@ -57,8 +57,6 @@ android {
             buildConfigField "String", "ad_native", "\"ca-app-pub-3940256099942544/3419835294\""
             buildConfigField "String", "ads_open_app", "\"ca-app-pub-3940256099942544/3419835294\""
             buildConfigField "Boolean", "env_dev", "false"
-
-
         }
     }
     compileOptions {
@@ -76,19 +74,19 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation project(path: ':ads')
-    implementation 'com.google.android.gms:play-services-ads:24.1.0'
+    implementation 'com.google.android.gms:play-services-ads:25.3.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "androidx.core:core-ktx:1.18.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.work:work-runtime-ktx:2.8.0'
+    implementation 'androidx.work:work-runtime-ktx:2.11.2'
 
-    implementation 'com.google.android.play:review:2.0.1'
-    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation 'com.google.android.play:review:2.0.2'
+    implementation 'com.google.android.play:review-ktx:2.0.2'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }
 repositories {
