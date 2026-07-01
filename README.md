@@ -1,4 +1,4 @@
-#<h1>⛔ DO NOT download the "ads" module for editing.</h1>
+<h1>⛔ DO NOT download the "ads" module for editing.</h1>
 
 # ERain Studio
 - Admob
