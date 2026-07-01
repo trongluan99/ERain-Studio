@@ -1,3 +1,5 @@
+#<h1>⛔ DO NOT download the "ads" module for editing.</h1>
+
 # ERain Studio
 - Admob
 - Mediation Admob (Facebook, Applovin, Vungle, Pangle, Mintegral)
