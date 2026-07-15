@@ -54,17 +54,6 @@ public class ERainAd {
         return INSTANCE;
     }
 
-    private boolean isForceOrganic = false;
-
-    public boolean isForceOrganic() {
-        return isForceOrganic;
-    }
-
-    public void setForceOrganic(boolean forceOrganic) {
-        isForceOrganic = forceOrganic;
-    }
-
-
     public ERainAdConfig getAdConfig() {
         return adConfig;
     }
@@ -73,77 +62,77 @@ public class ERainAd {
         return SharePreferenceUtils.getIsOrganic(adConfig.getApplication());
     }
 
-    public Boolean getShouldDisplayNativeOnboardingNormal1() {
+    public Boolean getShouldDisplayNativeOnboardingNormal1(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativeOnboardingFull1() {
+    public Boolean getShouldDisplayNativeOnboardingFull1(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativeOnboardingFull2() {
+    public Boolean getShouldDisplayNativeOnboardingFull2(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativeOnboardingNormal2() {
+    public Boolean getShouldDisplayNativeOnboardingNormal2(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativeHome() {
+    public Boolean getShouldDisplayNativeHome(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativePermission() {
+    public Boolean getShouldDisplayNativePermission(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayInterOnboarding() {
+    public Boolean getShouldDisplayInterOnboarding(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayNativeWelcomeBack() {
+    public Boolean getShouldDisplayNativeWelcomeBack(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayInterWelcomeBack() {
+    public Boolean getShouldDisplayInterWelcomeBack(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayWidgetUninstall() {
+    public Boolean getShouldDisplayWidgetUninstall(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
         return true;
     }
 
-    public Boolean getShouldDisplayHighCTA() {
+    public Boolean getShouldDisplayHighCTA(boolean isForceOrganic) {
         if (isForceOrganic) {
             return !getOrganic();
         }
