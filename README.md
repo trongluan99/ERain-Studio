@@ -1,3 +1,5 @@
+<h1>⛔ DO NOT download the "ads" module for editing.</h1>
+
 # ERain Studio
 - Admob
 - Mediation Admob (Facebook, Applovin, Vungle, Pangle, Mintegral)
@@ -17,9 +19,9 @@
         maven {
             url = uri("https://android-sdk.is.com/")
         }
-    implementation project(path: ':ads')
+    implementation 'com.github.trongluan99:ERain-Studio:1.8'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.google.android.gms:play-services-ads:23.2.0'
+    implementation 'com.google.android.gms:play-services-ads:25.3.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 ~~~
 # Setup environment with id ads for project
