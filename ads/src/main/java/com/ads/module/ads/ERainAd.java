@@ -75,79 +75,79 @@ public class ERainAd {
 
     public Boolean getShouldDisplayNativeOnboardingNormal1() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull1() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull2() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativeOnboardingNormal2() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativeHome() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativePermission() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayInterOnboarding() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayNativeWelcomeBack() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayInterWelcomeBack() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayWidgetUninstall() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public Boolean getShouldDisplayHighCTA() {
         if (isForceOrganic) {
-            return true;
+            return !getOrganic();
         }
-        return !getOrganic();
+        return true;
     }
 
     public void setCountClickToShowAds(int countClickToShowAds) {
