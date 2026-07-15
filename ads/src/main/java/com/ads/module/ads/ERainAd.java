@@ -54,6 +54,17 @@ public class ERainAd {
         return INSTANCE;
     }
 
+    private boolean isForceOrganic = false;
+
+    public boolean isForceOrganic() {
+        return isForceOrganic;
+    }
+
+    public void setForceOrganic(boolean forceOrganic) {
+        isForceOrganic = forceOrganic;
+    }
+
+
     public ERainAdConfig getAdConfig() {
         return adConfig;
     }
@@ -63,47 +74,79 @@ public class ERainAd {
     }
 
     public Boolean getShouldDisplayNativeOnboardingNormal1() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull1() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboardingFull2() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeOnboardingNormal2() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeHome() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativePermission() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayInterOnboarding() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayNativeWelcomeBack() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayInterWelcomeBack() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
-
     public Boolean getShouldDisplayWidgetUninstall() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 
     public Boolean getShouldDisplayHighCTA() {
+        if (isForceOrganic) {
+            return true;
+        }
         return !getOrganic();
     }
 

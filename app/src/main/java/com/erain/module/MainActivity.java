@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ERainAd.getInstance().getShouldDisplayNativeOnboardingFull1();
-
 
         btnLoad = findViewById(R.id.btnLoad);
         btnShow = findViewById(R.id.btnShow);
