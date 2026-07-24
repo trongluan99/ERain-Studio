@@ -1,5 +1,7 @@
 <h1>⛔ DO NOT download the "ads" module for editing.</h1>
 
+<h1><b> Link Example: https://github.com/Infinity-Technologies-Global/Example-AdLogic-Partner/ </b></h1>
+
 # ERain Studio
 - Admob
 - Mediation Admob (Facebook, Applovin, Vungle, Pangle, Mintegral)
