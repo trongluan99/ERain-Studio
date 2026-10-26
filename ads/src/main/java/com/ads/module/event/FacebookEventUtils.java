@@ -11,11 +11,8 @@ public class FacebookEventUtils {
         AppEventsLogger.newLogger(context).logEvent("paid_ad_impression", params);
     }
 
-    static void logPaidAdImpressionValue(Context context, Bundle bundle, int mediationProvider) {
-        if (mediationProvider == ERainAdConfig.PROVIDER_MAX)
-            AppEventsLogger.newLogger(context).logEvent("max_paid_ad_impression_value", bundle);
-        else
-            AppEventsLogger.newLogger(context).logEvent("paid_ad_impression_value", bundle);
+    static void logPaidAdImpressionValue(Context context, Bundle bundle) {
+        AppEventsLogger.newLogger(context).logEvent("paid_ad_impression_value", bundle);
     }
 
     public static void logClickAdsEvent(Context context, Bundle bundle) {

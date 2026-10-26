@@ -9,12 +9,17 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ads.module.admob.AppOpenManager;
 import com.ads.module.ads.ERainAd;
 import com.ads.module.funtion.AdCallback;
 import com.ads.module.ump.IAdConsentCallBack;
 import com.ads.module.ump.ITGAdConsent;
+import com.google.android.gms.ads.AdError;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.FormError;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
@@ -96,14 +101,46 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loadingRemoteConfig() {
-        ERainAd.getInstance().loadSplashInterstitialAds(this, BuildConfig.ad_interstitial_splash, 25000, 5000, new AdCallback() {
+        /*ERainAd.getInstance().loadSplashInterstitialAds(this, BuildConfig.ad_interstitial_splash, 25000, 5000, new AdCallback() {
             @Override
             public void onNextAction() {
                 super.onNextAction();
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
-        });
+        });*/
+
+        List<String> listIdOpen = Arrays.asList(
+                BuildConfig.ad_appopen_resume, // ID High
+                BuildConfig.ad_appopen_resume  // ID Normal
+        );
+
+        AppOpenManager.getInstance().loadAndShowOpenSplashSequentially(
+                this,
+                listIdOpen,
+                25000,
+                new AdCallback() {
+                    @Override
+                    public void onAdSplashReady() {
+                        super.onAdSplashReady();
+                        AppOpenManager.getInstance().showOpenSplashSequentially(SplashActivity.this, new AdCallback() {
+                            @Override
+                            public void onNextAction() {
+                                super.onNextAction();
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }
+        );
     }
 
     @Override

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.ads.module.ads.wrapper.ApInterstitialAd;
 import com.ads.module.ads.wrapper.ApNativeAd;
 import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -119,5 +120,12 @@ public class AdCallback {
 
     public void onAdPriorityFailedToShow(@Nullable AdError adError) {
 
+    }
+
+    // Log Rev
+    public void onAdLogRev(AdValue adValue, String adUnitId, String mediationAdapterClassName, AdType adType) {
+    }
+
+    public void onAdClicked(String adUnitId, String mediationAdapterClassName, AdType adType) {
     }
 }

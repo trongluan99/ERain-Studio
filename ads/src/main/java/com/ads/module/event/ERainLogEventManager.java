@@ -21,8 +21,8 @@ public class ERainLogEventManager {
 
     private static final String TAG = "ERainLogEventManager";
 
-    public static void logPaidAdImpression(Context context, AdValue adValue, String adUnitId, String mediationAdapterClassName, AdType adType) {
-        logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName, ERainAdConfig.PROVIDER_ADMOB);
+    public static void logPaidAdImpression(Context context, AdValue adValue, String adUnitId, String mediationAdapterClassName) {
+        logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName);
         ERainAdjust.pushTrackEventAdmob(adValue);
         // Log revenue Facebook 30/08
         float value = adValue.getValueMicros() * 1.0f / 1000000 * 26000;
@@ -67,7 +67,7 @@ public class ERainLogEventManager {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.AD_IMPRESSION, params);
     }
 
-    private static void logEventWithAds(Context context, float revenue, int precision, String adUnitId, String network, int mediationProvider) {
+    private static void logEventWithAds(Context context, float revenue, int precision, String adUnitId, String network) {
         Bundle params = new Bundle(); // Log ad value in micros.
         params.putDouble("valuemicros", revenue);
         params.putString("currency", "USD");
@@ -75,7 +75,7 @@ public class ERainLogEventManager {
         params.putString("adunitid", adUnitId);
         params.putString("network", network);
 
-        logPaidAdImpressionValue(context, revenue / 1000000.0, precision, adUnitId, network, mediationProvider);
+        logPaidAdImpressionValue(context, revenue / 1000000.0, precision, adUnitId, network);
         FirebaseAnalyticsUtil.logEventWithAds(context, params);
         FacebookEventUtils.logEventWithAds(context, params);
         SharePreferenceUtils.updateCurrentTotalRevenueAd(context, (float) revenue);
@@ -89,7 +89,7 @@ public class ERainLogEventManager {
         logTotalRevenueAdIn7DaysIfNeed(context);
     }
 
-    private static void logPaidAdImpressionValue(Context context, double value, int precision, String adunitid, String network, int mediationProvider) {
+    private static void logPaidAdImpressionValue(Context context, double value, int precision, String adunitid, String network) {
         Bundle params = new Bundle();
         params.putDouble("value", value);
         params.putString("currency", "USD");
@@ -99,9 +99,9 @@ public class ERainLogEventManager {
 
 
         ERainAdjust.logPaidAdImpressionValue(value, "USD");
-        FirebaseAnalyticsUtil.logPaidAdImpressionValue(context, params, mediationProvider);
+        FirebaseAnalyticsUtil.logPaidAdImpressionValue(context, params);
 
-        FacebookEventUtils.logPaidAdImpressionValue(context, params, mediationProvider);
+        FacebookEventUtils.logPaidAdImpressionValue(context, params);
     }
 
     public static void logClickAdsEvent(Context context, String adUnitId) {

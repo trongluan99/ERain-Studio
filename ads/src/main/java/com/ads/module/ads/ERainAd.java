@@ -39,6 +39,8 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 
+import java.util.List;
+
 public class ERainAd {
     public static final String TAG_ADJUST = "ERainAdjust";
     public static final String TAG = "JscAd";
@@ -895,5 +897,41 @@ public class ERainAd {
                 },
                 false
         );
+    }
+
+    public void loadInterSplashPrioritySequentially(final Context context,
+                                                    List<String> listId,
+                                                    long timeOut,
+                                                    long timeDelay,
+                                                    AdCallback adListener) {
+        Admob.getInstance().loadInterSplashPrioritySequentially(context, listId, timeOut, timeDelay, adListener);
+    }
+
+    public void loadInterSplashPrioritySequentially(final Context context,
+                                                    List<String> listId,
+                                                    long timeOut,
+                                                    AdCallback adListener) {
+        Admob.getInstance().loadInterSplashPrioritySequentially(context, listId, timeOut, 0, adListener);
+    }
+
+    public void loadInterSplashPriority2Sequentially(final Context context,
+                                                     String idAdsHigh,
+                                                     String idAdsNormal,
+                                                     long timeOut,
+                                                     long timeDelay,
+                                                     AdCallback adListener) {
+        Admob.getInstance().loadInterSplashPriority2Sequentially(context, idAdsHigh, idAdsNormal, timeOut, timeDelay, adListener);
+    }
+
+    public void loadInterSplashPriority2Sequentially(final Context context,
+                                                     String idAdsHigh,
+                                                     String idAdsNormal,
+                                                     long timeOut,
+                                                     AdCallback adListener) {
+        Admob.getInstance().loadInterSplashPriority2Sequentially(context, idAdsHigh, idAdsNormal, timeOut, 0, adListener);
+    }
+
+    public void onShowSplashPrioritySequentially(AppCompatActivity activity, AdCallback adListener) {
+        Admob.getInstance().onShowSplashPrioritySequentially(activity, adListener);
     }
 }

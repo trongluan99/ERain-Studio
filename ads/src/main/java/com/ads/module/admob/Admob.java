@@ -68,6 +68,7 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -418,7 +419,7 @@ public class Admob {
                     adValue,
                     mInterstitialSplash.getAdUnitId(),
                     mInterstitialSplash.getResponseInfo()
-                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                            .getMediationAdapterClassName());
             if (tokenAdjust != null) {
                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterstitialSplash.getAdUnitId(), tokenAdjust);
             }
@@ -553,7 +554,7 @@ public class Admob {
                     adValue,
                     mInterstitialSplash.getAdUnitId(),
                     mInterstitialSplash.getResponseInfo()
-                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                            .getMediationAdapterClassName());
 
             if (tokenAdjust != null) {
                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterstitialSplash.getAdUnitId(), tokenAdjust);
@@ -710,7 +711,7 @@ public class Admob {
                                     adValue,
                                     interstitialAd.getAdUnitId(),
                                     interstitialAd.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                                            .getMediationAdapterClassName());
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, interstitialAd.getAdUnitId(), tokenAdjust);
                             }
@@ -1161,7 +1162,7 @@ public class Admob {
                                     adValue,
                                     adView.getAdUnitId(),
                                     adView.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.BANNER);
+                                            .getMediationAdapterClassName());
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, adView.getAdUnitId(), tokenAdjust);
                             }
@@ -1244,7 +1245,7 @@ public class Admob {
                                 adValue,
                                 adView.getAdUnitId(),
                                 adView.getResponseInfo()
-                                        .getMediationAdapterClassName(), AdType.BANNER);
+                                        .getMediationAdapterClassName());
                         if (tokenAdjust != null) {
                             ERainLogEventManager.logPaidAdjustWithToken(adValue, adView.getAdUnitId(), tokenAdjust);
                         }
@@ -1314,7 +1315,7 @@ public class Admob {
                                 adValue,
                                 adView.getAdUnitId(),
                                 adView.getResponseInfo()
-                                        .getMediationAdapterClassName(), AdType.BANNER);
+                                        .getMediationAdapterClassName());
                         if (tokenAdjust != null) {
                             ERainLogEventManager.logPaidAdjustWithToken(adValue, adView.getAdUnitId(), tokenAdjust);
                         }
@@ -1443,7 +1444,7 @@ public class Admob {
                         ERainLogEventManager.logPaidAdImpression(context,
                                 adValue,
                                 id,
-                                nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                nativeAd.getResponseInfo().getMediationAdapterClassName());
                         if (tokenAdjust != null) {
                             ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
                         }
@@ -1501,7 +1502,7 @@ public class Admob {
                             ERainLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
-                                    nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                    nativeAd.getResponseInfo().getMediationAdapterClassName());
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
                             }
@@ -1563,7 +1564,7 @@ public class Admob {
                             ERainLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
-                                    nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                    nativeAd.getResponseInfo().getMediationAdapterClassName());
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
                             }
@@ -1630,7 +1631,7 @@ public class Admob {
                             ERainLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
-                                    nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                    nativeAd.getResponseInfo().getMediationAdapterClassName());
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
                             }
@@ -1690,7 +1691,7 @@ public class Admob {
                             ERainLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
-                                    nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                    nativeAd.getResponseInfo().getMediationAdapterClassName());
 
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
@@ -1753,7 +1754,7 @@ public class Admob {
                         ERainLogEventManager.logPaidAdImpression(context,
                                 adValue,
                                 id,
-                                nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
+                                nativeAd.getResponseInfo().getMediationAdapterClassName());
                         if (tokenAdjust != null) {
                             ERainLogEventManager.logPaidAdjustWithToken(adValue, id, tokenAdjust);
                         }
@@ -1902,8 +1903,7 @@ public class Admob {
                 Admob.this.rewardedAd.setOnPaidEventListener(adValue -> {
                     ERainLogEventManager.logPaidAdImpression(context,
                             adValue,
-                            rewardedAd.getAdUnitId(), Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName()
-                            , AdType.REWARDED);
+                            rewardedAd.getAdUnitId(), Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName());
                     if (tokenAdjust != null) {
                         ERainLogEventManager.logPaidAdjustWithToken(adValue, rewardedAd.getAdUnitId(), tokenAdjust);
                     }
@@ -1940,8 +1940,7 @@ public class Admob {
                     ERainLogEventManager.logPaidAdImpression(context,
                             adValue,
                             rewardedAd.getAdUnitId(),
-                            Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName()
-                            , AdType.REWARDED);
+                            Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName());
                     if (tokenAdjust != null) {
                         ERainLogEventManager.logPaidAdjustWithToken(adValue, rewardedAd.getAdUnitId(), tokenAdjust);
                     }
@@ -1979,8 +1978,7 @@ public class Admob {
                     ERainLogEventManager.logPaidAdImpression(context,
                             adValue,
                             rewardedAd.getAdUnitId(),
-                            rewardedAd.getResponseInfo().getMediationAdapterClassName()
-                            , AdType.REWARDED);
+                            rewardedAd.getResponseInfo().getMediationAdapterClassName());
                     if (tokenAdjust != null) {
                         ERainLogEventManager.logPaidAdjustWithToken(adValue, rewardedAd.getAdUnitId(), tokenAdjust);
                     }
@@ -2793,7 +2791,7 @@ public class Admob {
                                     adValue,
                                     mInterSplashHigh1.getAdUnitId(),
                                     mInterSplashHigh1.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                                            .getMediationAdapterClassName());
 
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashHigh1.getAdUnitId(), tokenAdjust);
@@ -3029,7 +3027,7 @@ public class Admob {
                                     adValue,
                                     mInterSplashHigh2.getAdUnitId(),
                                     mInterSplashHigh2.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                                            .getMediationAdapterClassName());
 
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashHigh2.getAdUnitId(), tokenAdjust);
@@ -3264,7 +3262,7 @@ public class Admob {
                                     adValue,
                                     mInterSplashHigh3.getAdUnitId(),
                                     mInterSplashHigh3.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                                            .getMediationAdapterClassName());
 
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashHigh3.getAdUnitId(), tokenAdjust);
@@ -3499,7 +3497,7 @@ public class Admob {
                                     adValue,
                                     mInterSplashNormal.getAdUnitId(),
                                     mInterSplashNormal.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                                            .getMediationAdapterClassName());
 
                             if (tokenAdjust != null) {
                                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashNormal.getAdUnitId(), tokenAdjust);
@@ -3545,7 +3543,7 @@ public class Admob {
                     adValue,
                     mInterSplashNormal.getAdUnitId(),
                     mInterSplashNormal.getResponseInfo()
-                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                            .getMediationAdapterClassName());
             if (tokenAdjust != null) {
                 ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashNormal.getAdUnitId(), tokenAdjust);
             }
@@ -3705,5 +3703,289 @@ public class Admob {
 
             }
         }, timeDelay);
+    }
+
+    private InterstitialAd mInterSplashSequential;
+    private boolean isTimeDelaySequential = false;
+    private boolean isTimeoutSequential = false;
+    private Handler handlerTimeoutSequential;
+    private Runnable rdTimeoutSequential;
+
+    public void loadInterSplashPrioritySequentially(final Context context,
+                                                    List<String> listId,
+                                                    long timeOut,
+                                                    AdCallback adListener) {
+        loadInterSplashPrioritySequentially(context, listId, timeOut, 0, adListener);
+    }
+
+    public void loadInterSplashPriority2Sequentially(final Context context,
+                                                     String idHigh,
+                                                     String idNormal,
+                                                     long timeOut,
+                                                     AdCallback adListener) {
+        loadInterSplashPriority2Sequentially(context, idHigh, idNormal, timeOut, 0, adListener);
+    }
+
+    public void loadInterSplashPriority2Sequentially(final Context context,
+                                                     String idHigh,
+                                                     String idNormal,
+                                                     long timeOut,
+                                                     long timeDelay,
+                                                     AdCallback adListener) {
+        List<String> list = new ArrayList<>();
+        if (idHigh != null && !idHigh.isEmpty()) list.add(idHigh);
+        if (idNormal != null && !idNormal.isEmpty()) list.add(idNormal);
+        loadInterSplashPrioritySequentially(context, list, timeOut, timeDelay, adListener);
+    }
+
+    public void loadInterSplashPrioritySequentially(final Context context,
+                                                    List<String> listId,
+                                                    long timeOut,
+                                                    long timeDelay,
+                                                    AdCallback adListener) {
+        isTimeDelaySequential = false;
+        isTimeoutSequential = false;
+        mInterSplashSequential = null;
+        mInterSplashHigh1 = null;
+
+        if (AppPurchase.getInstance().isPurchased(context)) {
+            if (adListener != null) {
+                adListener.onNextAction();
+            }
+            return;
+        }
+
+        List<String> validIds = new ArrayList<>();
+        if (listId != null) {
+            for (String id : listId) {
+                if (id != null && !id.trim().isEmpty()) {
+                    validIds.add(id.trim());
+                }
+            }
+        }
+
+        if (validIds.isEmpty()) {
+            Log.e(TAG, "loadInterSplashPrioritySequentially: listId is empty or invalid");
+            if (adListener != null) {
+                adListener.onNextAction();
+            }
+            return;
+        }
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            isTimeDelaySequential = true;
+            if (mInterSplashSequential != null && !isTimeoutSequential) {
+                Log.i(TAG, "loadInterSplashPrioritySequentially: show ad on delay passed");
+                if (adListener != null) {
+                    adListener.onAdSplashReady();
+                }
+            }
+        }, timeDelay);
+
+        if (timeOut > 0) {
+            handlerTimeoutSequential = new Handler(Looper.getMainLooper());
+            rdTimeoutSequential = () -> {
+                Log.e(TAG, "loadInterSplashPrioritySequentially: on timeout");
+                isTimeoutSequential = true;
+                if (mInterSplashSequential != null) {
+                    Log.i(TAG, "loadInterSplashPrioritySequentially: show ad on timeout");
+                    if (adListener != null) {
+                        adListener.onAdSplashReady();
+                    }
+                    return;
+                }
+                if (adListener != null) {
+                    isShowLoadingSplash = false;
+                    adListener.onNextAction();
+                }
+            };
+            handlerTimeoutSequential.postDelayed(rdTimeoutSequential, timeOut);
+        }
+
+        isShowLoadingSplash = true;
+        loadInterSplashSequentialStep(context, validIds, 0, adListener);
+    }
+
+    private void loadInterSplashSequentialStep(final Context context,
+                                               final List<String> ids,
+                                               final int index,
+                                               final AdCallback adListener) {
+        if (isTimeoutSequential) {
+            return;
+        }
+
+        if (index >= ids.size()) {
+            Log.e(TAG, "loadInterSplashPrioritySequentially: All ads in list failed to load");
+            if (handlerTimeoutSequential != null && rdTimeoutSequential != null) {
+                handlerTimeoutSequential.removeCallbacks(rdTimeoutSequential);
+            }
+            if (adListener != null) {
+                isShowLoadingSplash = false;
+                adListener.onNextAction();
+            }
+            return;
+        }
+
+        String currentId = ids.get(index);
+        Log.i(TAG, "loadInterSplashPrioritySequentially: Loading sequentially index " + index + " with ID: " + currentId);
+
+        getInterstitialAds(context, currentId, new AdCallback() {
+            @Override
+            public void onInterstitialLoad(@Nullable InterstitialAd interstitialAd) {
+                super.onInterstitialLoad(interstitialAd);
+                if (isTimeoutSequential) {
+                    return;
+                }
+                if (interstitialAd != null) {
+                    Log.i(TAG, "loadInterSplashPrioritySequentially: Loaded successfully ad at index " + index);
+                    mInterSplashSequential = interstitialAd;
+                    mInterSplashHigh1 = interstitialAd;
+
+                    mInterSplashSequential.setOnPaidEventListener(adValue -> {
+                        ERainLogEventManager.logPaidAdImpression(context,
+                                adValue,
+                                mInterSplashSequential.getAdUnitId(),
+                                mInterSplashSequential.getResponseInfo().getMediationAdapterClassName());
+                        if (tokenAdjust != null) {
+                            ERainLogEventManager.logPaidAdjustWithToken(adValue, mInterSplashSequential.getAdUnitId(), tokenAdjust);
+                        }
+                    });
+
+                    if (adListener != null) {
+                        if (index == 0) {
+                            adListener.onAdSplashHigh1Ready();
+                        } else if (index == 1) {
+                            adListener.onAdSplashNormalReady();
+                        }
+                    }
+
+                    if (isTimeDelaySequential) {
+                        if (adListener != null) {
+                            adListener.onAdSplashReady();
+                        }
+                        Log.i(TAG, "loadInterSplashPrioritySequentially: show ad on loaded");
+                    }
+                } else {
+                    Log.e(TAG, "loadInterSplashPrioritySequentially: ad is null at index " + index + ", try next");
+                    if (adListener != null) {
+                        adListener.onAdPriorityFailedToLoad(new LoadAdError(0, "Interstitial ad is null", "Admob", null, null));
+                    }
+                    loadInterSplashSequentialStep(context, ids, index + 1, adListener);
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(@Nullable LoadAdError error) {
+                super.onAdFailedToLoad(error);
+                if (isTimeoutSequential) {
+                    return;
+                }
+                Log.e(TAG, "loadInterSplashPrioritySequentially: Failed at index " + index + ", error: " + (error != null ? error.getMessage() : "null") + " -> loading next sequentially");
+                if (adListener != null) {
+                    adListener.onAdPriorityFailedToLoad(error);
+                }
+                loadInterSplashSequentialStep(context, ids, index + 1, adListener);
+            }
+
+            @Override
+            public void onAdLogRev(AdValue adValue, String adUnitId, String mediationAdapterClassName, AdType adType) {
+                super.onAdLogRev(adValue, adUnitId, mediationAdapterClassName, adType);
+                if (adListener != null) {
+                    adListener.onAdLogRev(adValue, adUnitId, mediationAdapterClassName, adType);
+                }
+            }
+        });
+    }
+
+    public void onShowSplashPrioritySequentially(AppCompatActivity activity, AdCallback adListener) {
+        isShowLoadingSplash = true;
+        if (mInterSplashSequential == null) {
+            Log.e(TAG, "onShowSplashPrioritySequentially: mInterSplashSequential is null");
+            if (adListener != null) {
+                adListener.onNextAction();
+            }
+            return;
+        }
+
+        if (handlerTimeoutSequential != null && rdTimeoutSequential != null) {
+            handlerTimeoutSequential.removeCallbacks(rdTimeoutSequential);
+        }
+
+        if (adListener != null) {
+            adListener.onAdLoaded();
+        }
+
+        mInterSplashSequential.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+                isShowInterstitialSplashSuccess = true;
+                AppOpenManager.getInstance().setInterstitialShowing(true);
+                AppOpenManager.getInstance().disableAppResume();
+                isShowLoadingSplash = true;
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                AppOpenManager.getInstance().setInterstitialShowing(false);
+                AppOpenManager.getInstance().enableAppResume();
+                mInterSplashSequential = null;
+                mInterSplashHigh1 = null;
+                isShowLoadingSplash = false;
+                if (adListener != null) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                    adListener.onAdClosed();
+                    adListener.onNextAction();
+                }
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                AppOpenManager.getInstance().setInterstitialShowing(false);
+                mInterSplashSequential = null;
+                mInterSplashHigh1 = null;
+                isShowLoadingSplash = false;
+                if (adListener != null) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                    adListener.onAdFailedToShow(adError);
+                    adListener.onNextAction();
+                }
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                if (adListener != null) {
+                    adListener.onAdClicked();
+                    if (mInterSplashSequential != null && mInterSplashSequential.getResponseInfo() != null) {
+                        adListener.onAdClicked(mInterSplashSequential.getAdUnitId(),
+                                mInterSplashSequential.getResponseInfo().getMediationAdapterClassName(),
+                                AdType.INTERSTITIAL);
+                    }
+                }
+                if (disableAdResumeWhenClickAds) {
+                    AppOpenManager.getInstance().disableAdResumeByClickAction();
+                }
+                if (mInterSplashSequential != null) {
+                    ERainLogEventManager.logClickAdsEvent(activity, mInterSplashSequential.getAdUnitId());
+                }
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                if (adListener != null) {
+                    adListener.onAdImpression();
+                }
+            }
+        });
+
+        mInterSplashSequential.show(activity);
     }
 }

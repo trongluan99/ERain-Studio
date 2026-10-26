@@ -22,11 +22,11 @@ public class App extends AdsMultiDexApplication {
         mERainAdConfig.setAdjustConfig(adjustConfig);
         mERainAdConfig.setFacebookClientToken(getString(R.string.facebook_client_token));
         mERainAdConfig.setAdjustTokenTiktok(getString(R.string.tiktok_token));
-        mERainAdConfig.setIdAdResume(BuildConfig.ad_appopen_resume);
+        mERainAdConfig.setIdAdResume(BuildConfig.ad_appopen_resume, BuildConfig.ad_appopen_resume);
 
         ERainAd.getInstance().init(this, mERainAdConfig);
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
         Admob.getInstance().setOpenActivityAfterShowInterAds(true);
-        AppOpenManager.getInstance().disableAppResumeWithActivity(MainActivity.class);
+        AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
     }
 }

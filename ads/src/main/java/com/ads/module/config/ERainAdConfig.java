@@ -7,41 +7,52 @@ import java.util.List;
 
 public class ERainAdConfig {
 
-    //switch mediation use for app
-    public static final int PROVIDER_ADMOB = 0;
-    public static final int PROVIDER_MAX = 1;
-
     public static final String ENVIRONMENT_DEVELOP = "develop";
     public static final String ENVIRONMENT_PRODUCTION = "production";
-
     public static final String DEFAULT_TOKEN_FACEBOOK_SDK = "client_token";
     public static String ADJUST_TOKEN_TIKTOK = "client_token_adjust_tiktok";
-
     private boolean isVariantDev = false;
-
-    /**
-     * adjustConfig enable adjust and setup adjust token
-     */
     private AdjustConfig adjustConfig;
-
-    /**
-     * eventNamePurchase push event to adjust when user purchased
-     */
     private String eventNamePurchase = "";
     private String idAdResume;
+    private String idAdResumeHigh;
     private List<String> listDeviceTest = new ArrayList();
-
     private Application application;
     private boolean enableAdResume = false;
     private String facebookClientToken = DEFAULT_TOKEN_FACEBOOK_SDK;
 
     private String adjustTokenTiktok;
 
-    /**
-     * intervalInterstitialAd: time between two interstitial ad impressions
-     * unit: seconds
-     */
     private int intervalInterstitialAd = 0;
+
+    private boolean isShowAdDebugDialog = false;
+
+    public boolean isShowAdDebugDialog() {
+        return isShowAdDebugDialog;
+    }
+
+    public void setShowAdDebugDialog(boolean showAdDebugDialog) {
+        isShowAdDebugDialog = showAdDebugDialog;
+    }
+
+    private int prepareLoadingAdsDialogLayout = -1;
+    private int resumeLoadingDialogLayout = -1;
+
+    public void setPrepareLoadingAdsDialogLayout(int prepareLoadingAdsDialogLayout) {
+        this.prepareLoadingAdsDialogLayout = prepareLoadingAdsDialogLayout;
+    }
+
+    public int getPrepareLoadingAdsDialogLayout() {
+        return prepareLoadingAdsDialogLayout;
+    }
+
+    public void setResumeLoadingDialogLayout(int resumeLoadingDialogLayout) {
+        this.resumeLoadingDialogLayout = resumeLoadingDialogLayout;
+    }
+
+    public int getResumeLoadingDialogLayout() {
+        return resumeLoadingDialogLayout;
+    }
 
     public ERainAdConfig(Application application) {
         this.application = application;
@@ -52,9 +63,6 @@ public class ERainAdConfig {
         this.application = application;
     }
 
-    /**
-     * @param isVariantDev
-     */
     @Deprecated
     public void setVariant(Boolean isVariantDev) {
         this.isVariantDev = isVariantDev;
@@ -90,6 +98,14 @@ public class ERainAdConfig {
         return idAdResume;
     }
 
+    public String getIdAdResumeHigh() {
+        return idAdResumeHigh;
+    }
+
+    public void setIdAdResumeHigh(String idAdResumeHigh) {
+        this.idAdResumeHigh = idAdResumeHigh;
+    }
+
     public List<String> getListDeviceTest() {
         return listDeviceTest;
     }
@@ -100,6 +116,12 @@ public class ERainAdConfig {
 
 
     public void setIdAdResume(String idAdResume) {
+        this.idAdResume = idAdResume;
+        enableAdResume = true;
+    }
+
+    public void setIdAdResume(String idAdResumeHigh, String idAdResume) {
+        this.idAdResumeHigh = idAdResumeHigh;
         this.idAdResume = idAdResume;
         enableAdResume = true;
     }
