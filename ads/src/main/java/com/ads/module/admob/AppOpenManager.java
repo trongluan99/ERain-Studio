@@ -2212,6 +2212,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private Handler handlerTimeoutOpenSequential;
     private Runnable rdTimeoutOpenSequential;
     private boolean isTimeoutOpenSequential = false;
+    private boolean isShowingOpenSequential = false;
 
     public void loadAndShowOpenSplash2Sequentially(Context context, String idOpenHigh, String idOpenNormal, long timeOut, AdCallback adCallback) {
         List<String> list = new ArrayList<>();
@@ -2224,6 +2225,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         mOpenSplashSequential = null;
         mOpenSplashHigh1 = null;
         isTimeoutOpenSequential = false;
+        isShowingOpenSequential = false;
 
         if (!this.isNetworkConnected(context)) {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -2367,11 +2369,21 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         if (handlerTimeoutOpenSequential != null && rdTimeoutOpenSequential != null) {
             handlerTimeoutOpenSequential.removeCallbacks(rdTimeoutOpenSequential);
         }
+        isShowingOpenSequential = true;
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (mOpenSplashSequential == null) {
                 if (adListener != null) {
                     adListener.onNextAction();
+                }
+                return;
+            }
+
+            if (!ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                // Keep the ad, onCheckShowOpenSplashSequentiallyWhenFail shows it when the app is back
+                isShowingOpenSequential = false;
+                if (adListener != null) {
+                    adListener.onAdFailedToShow(new AdError(0, "Show fail in background", "LuanDT"));
                 }
                 return;
             }
@@ -2437,6 +2449,15 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 }
             }
         }, 800);
+    }
+
+    public void onCheckShowOpenSplashSequentiallyWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
+        new Handler(activity.getMainLooper()).postDelayed(() -> {
+            if (mOpenSplashSequential != null && !isShowingOpenSequential) {
+                Log.d("AppOpenManager", "onCheckShowOpenSplashSequentiallyWhenFail: show open splash");
+                showOpenSplashSequentially(activity, callback);
+            }
+        }, timeDelay);
     }
 
     private AppOpenAd mOpenSplashHigh1;

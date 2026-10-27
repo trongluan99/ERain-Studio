@@ -3710,6 +3710,7 @@ public class Admob {
     private boolean isTimeoutSequential = false;
     private Handler handlerTimeoutSequential;
     private Runnable rdTimeoutSequential;
+    private boolean isShowingInterSequential = false;
 
     public void loadInterSplashPrioritySequentially(final Context context,
                                                     List<String> listId,
@@ -3745,6 +3746,7 @@ public class Admob {
                                                     AdCallback adListener) {
         isTimeDelaySequential = false;
         isTimeoutSequential = false;
+        isShowingInterSequential = false;
         mInterSplashSequential = null;
         mInterSplashHigh1 = null;
 
@@ -3841,6 +3843,11 @@ public class Admob {
                     mInterSplashSequential = interstitialAd;
                     mInterSplashHigh1 = interstitialAd;
 
+                    // Report the ad once: the timeout must not call onAdSplashReady again
+                    if (handlerTimeoutSequential != null && rdTimeoutSequential != null) {
+                        handlerTimeoutSequential.removeCallbacks(rdTimeoutSequential);
+                    }
+
                     mInterSplashSequential.setOnPaidEventListener(adValue -> {
                         ERainLogEventManager.logPaidAdImpression(context,
                                 adValue,
@@ -3909,6 +3916,15 @@ public class Admob {
 
         if (handlerTimeoutSequential != null && rdTimeoutSequential != null) {
             handlerTimeoutSequential.removeCallbacks(rdTimeoutSequential);
+        }
+
+        if (!ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+            // Keep the ad, onCheckShowSplashPrioritySequentiallyWhenFail shows it when the app is back
+            isShowLoadingSplash = false;
+            if (adListener != null) {
+                adListener.onAdFailedToShow(new AdError(0, "Show fail in background", "LuanDT"));
+            }
+            return;
         }
 
         if (adListener != null) {
@@ -3986,6 +4002,17 @@ public class Admob {
             }
         });
 
+        isShowingInterSequential = true;
         mInterSplashSequential.show(activity);
+    }
+
+    public void onCheckShowSplashPrioritySequentiallyWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
+        new Handler(activity.getMainLooper()).postDelayed(() -> {
+            // isTimeDelaySequential: the ad was already reported by onAdSplashReady
+            if (mInterSplashSequential != null && isTimeDelaySequential && !isShowingInterSequential) {
+                Log.i(TAG, "onCheckShowSplashPrioritySequentiallyWhenFail: show ad when back from background");
+                onShowSplashPrioritySequentially(activity, callback);
+            }
+        }, timeDelay);
     }
 }

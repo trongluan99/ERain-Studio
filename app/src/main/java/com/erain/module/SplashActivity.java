@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.module.admob.AppOpenManager;
-import com.ads.module.ads.ERainAd;
 import com.ads.module.funtion.AdCallback;
 import com.ads.module.ump.IAdConsentCallBack;
 import com.ads.module.ump.ITGAdConsent;
@@ -146,11 +145,12 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ERainAd.getInstance().onCheckShowSplashWhenFail(this, new AdCallback(){
+        AppOpenManager.getInstance().onCheckShowOpenSplashSequentiallyWhenFail(this, new AdCallback() {
             @Override
             public void onNextAction() {
                 super.onNextAction();
-                // next activity
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
             }
         }, 1000);
     }

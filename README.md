@@ -122,6 +122,98 @@ ERainAd.getInstance().loadSplashInterstitialAds(this, BuildConfig.ad_interstitia
         });
 ~~~   
 
+## Sequential Splash: resume after background
+
+Use the following integration when loading Splash ads sequentially (High first, then Normal if loading fails). Choose either Interstitial or App Open for your Splash screen.
+
+The resume helpers below are part of the current source changes. Use a library build containing these APIs; the dependency version shown above does not by itself confirm their availability.
+
+If the app is in the background when a show is attempted, the library keeps the loaded ad and calls `onAdFailedToShow()` with the message `Show fail in background`. It does not call `onNextAction()` in this case. Call the matching resume helper from `onResume()` to retry when the app returns.
+
+- Navigate to the next screen in `onNextAction()`, not in `onAdFailedToShow()`, so a background interruption can recover. Ad dismissal and SDK show failures already lead to `onNextAction()`.
+- Load once after your existing SDK initialization and consent flow. Do not restart loading from `onResume()`.
+- The resume helper checks the cached ad after `timeDelay` milliseconds. It does nothing if there is no cached ad or a show is already in progress; it does not load another ad.
+- Interstitial recovery also waits until the configured initial `timeDelay` has elapsed. Its load timeout is cancelled when an ad loads successfully, preventing another ready callback from that timeout.
+
+The snippets below belong inside a `SplashActivity` extending `AppCompatActivity`. Both alternatives use this navigation callback (`Intent`, `MainActivity` and `AdCallback` must be available in your app):
+
+```java
+private final AdCallback splashNavigation = new AdCallback() {
+    @Override
+    public void onNextAction() {
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        finish();
+    }
+};
+```
+
+### Interstitial Sequential
+
+Use `com.ads.module.ads.ERainAd` and `com.ads.module.funtion.AdCallback`. Call `loadSequentialInterstitial(idHigh, idNormal)` once with your configured Interstitial ad unit IDs. All durations below are milliseconds: a 25-second load timeout, a 5-second initial delay and a 1-second resume check delay.
+
+```java
+private void loadSequentialInterstitial(String idHigh, String idNormal) {
+    ERainAd.getInstance().loadInterSplashPriority2Sequentially(
+            this, idHigh, idNormal, 25000, 5000, new AdCallback() {
+                @Override
+                public void onAdSplashReady() {
+                    ERainAd.getInstance().onShowSplashPrioritySequentially(
+                            SplashActivity.this, splashNavigation);
+                }
+
+                @Override
+                public void onNextAction() {
+                    splashNavigation.onNextAction();
+                }
+            });
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+    ERainAd.getInstance().onCheckShowSplashPrioritySequentiallyWhenFail(
+            this, splashNavigation, 1000);
+}
+```
+
+Use `onCheckShowSplashPrioritySequentiallyWhenFail()` for this flow instead of the older `onCheckShowSplashWhenFail()` helper.
+
+### App Open Sequential
+
+Use `com.ads.module.admob.AppOpenManager` and `com.ads.module.funtion.AdCallback`. Call `loadSequentialAppOpen(idHigh, idNormal)` once with your configured App Open ad unit IDs. This alternative uses a 25-second load timeout and a 1-second resume check delay. `showOpenSplashSequentially()` also has an internal 800 ms delay before checking foreground state and showing the ad.
+
+```java
+private void loadSequentialAppOpen(String idHigh, String idNormal) {
+    AppOpenManager.getInstance().loadAndShowOpenSplash2Sequentially(
+            this, idHigh, idNormal, 25000, new AdCallback() {
+                @Override
+                public void onAdSplashReady() {
+                    AppOpenManager.getInstance().showOpenSplashSequentially(
+                            SplashActivity.this, splashNavigation);
+                }
+
+                @Override
+                public void onNextAction() {
+                    splashNavigation.onNextAction();
+                }
+            });
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+    AppOpenManager.getInstance().onCheckShowOpenSplashSequentiallyWhenFail(
+            this, splashNavigation, 1000);
+}
+```
+
+The [sample SplashActivity](app/src/main/java/com/erain/module/SplashActivity.java) uses the App Open Sequential flow.
+
+To verify the integration, send the app to the background while a Splash ad is loading or waiting to show, then return. A cached ad should show once, and closing it should open the next screen once. Also check normal launch, load failure/timeout and returning from an ad click.
+
 # Ad Banner
 ~~~   
 ERainAd.getInstance().loadBanner(this, BuildConfig.ad_banner);

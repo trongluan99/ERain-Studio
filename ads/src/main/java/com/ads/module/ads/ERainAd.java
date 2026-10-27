@@ -934,4 +934,8 @@ public class ERainAd {
     public void onShowSplashPrioritySequentially(AppCompatActivity activity, AdCallback adListener) {
         Admob.getInstance().onShowSplashPrioritySequentially(activity, adListener);
     }
+
+    public void onCheckShowSplashPrioritySequentiallyWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
+        Admob.getInstance().onCheckShowSplashPrioritySequentiallyWhenFail(activity, callback, timeDelay);
+    }
 }
