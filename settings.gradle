@@ -1,3 +1,0 @@
-include ':ads'
-include ':app'
-rootProject.name = "ERain-Studio"
