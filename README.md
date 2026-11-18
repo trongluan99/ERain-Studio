@@ -1,6 +1,6 @@
 # 🚀 Hướng Dẫn & Code Mẫu Tích Hợp ERain-Studio Ads SDK (GMA Next-Gen SDK)
 
-Tài liệu này cung cấp toàn bộ mã nguồn ví dụ (Example Code) chi tiết cho từng định dạng quảng cáo và luồng tích hợp của thư viện **ERain-Studio** theo chuẩn **Google Mobile Ads (GMA) Next-Gen SDK** (`com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.5.0`).
+Tài liệu này cung cấp toàn bộ mã nguồn ví dụ (Example Code) chi tiết cho từng định dạng quảng cáo và luồng tích hợp của thư viện **ERain-Studio** theo chuẩn **Google Mobile Ads (GMA) Next-Gen SDK** (`com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.6.0`).
 
 ---
 
@@ -9,14 +9,28 @@ Tài liệu này cung cấp toàn bộ mã nguồn ví dụ (Example Code) chi t
 1. [Cấu Hình Dự Án (Gradle & AndroidManifest)](#1-cấu-hình-dự-án-gradle--androidmanifest)
 2. [Khởi Tạo Thư Viện Trong Application](#2-khởi-tạo-thư-viện-trong-application)
 3. [Màn Hình Chào Splash (Sequential High-Floor Ads)](#3-màn-hình-chào-splash-sequential-high-floor-ads)
+   - [3.1. Interstitial Splash tuần tự (Khuyên dùng)](#31-interstitial-splash-tuần-tự-high-floor---normal-floor-khuyên-dùng)
+   - [3.2. App Open Splash tuần tự](#32-app-open-splash-tuần-tự-high-floor---normal-floor)
 4. [Banner Ads (Standard, Collapsible, Inline)](#4-banner-ads-standard-collapsible-inline)
 5. [Native Ads (Chuẩn Next-Gen Layout & Preload)](#5-native-ads-chuẩn-next-gen-layout--preload)
+   - [5.1. Định nghĩa XML Layout chuẩn Next-Gen](#51-định-nghĩa-file-xml-layout-theo-chuẩn-next-gen)
+   - [5.2. Tải & Hiển thị trực tiếp](#52-tải--hiển-thị-trực-tiếp-vào-layout)
+   - [5.3. Tải trước (Preload) và gán hiển thị sau](#53-tải-trước-preload-và-gán-hiển-thị-sau)
+   - [5.4. FullScreen / Swipeable Native Ad](#54-fullscreen--swipeable-native-ad-dialog)
 6. [Interstitial Ads (Standard & Priority)](#6-interstitial-ads-standard--priority)
+   - [6.1. Standard Interstitial (Preload & Show)](#61-standard-interstitial-preload--show)
+   - [6.2. Priority 2 Interstitial (High Floor + Normal Floor)](#62-priority-2-interstitial-high-floor--normal-floor)
+   - [6.3. Load & Show 1 chạm ngay lập tức](#63-load--show-interstitial-ngay-lập-tức-1-chạm)
 7. [Rewarded Ads & Rewarded Interstitial](#7-rewarded-ads--rewarded-interstitial)
+   - [7.1. Rewarded Ad (Load & Show tiêu chuẩn)](#71-rewarded-ad-load--show-tiêu-chuẩn)
+   - [7.2. Tải & Tự Động Hiển Thị Ngay (Auto Load & Show 1 chạm)](#72-tải--tự-động-hiển-thị-ngay-auto-load--show-1-chạm)
+   - [7.3. Rewarded Interstitial Ad](#73-rewarded-interstitial-ad)
 8. [Picture-in-Picture (PIP) Ads](#8-picture-in-picture-pip-ads)
 9. [Swipeable In-Feed Interstitial Ads](#9-swipeable-in-feed-interstitial-ads)
 10. [In-App Purchase & Subscription (Google Play Billing 9.0)](#10-in-app-purchase--subscription-google-play-billing-90)
-11. [Công Cụ Debug Ads & Bidding Inspector (ERainAdDebugManager)](#11-công-cụ-debug-ads--bidding-inspector-erainaddebugmanager)
+11. [Quản Lý UMP Consent (GDPR) & In-App Update](#11-quản-lý-ump-consent-gdpr--in-app-update)
+12. [Công Cụ Debug Ads & Bidding Inspector (ERainAdDebugManager)](#12-công-cụ-debug-ads--bidding-inspector-erainaddebugmanager)
+13. [Bảng Mã Lỗi & Khắc Phục (Troubleshooting)](#13-bảng-mã-lỗi--khắc-phục-troubleshooting)
 
 ---
 
@@ -25,14 +39,15 @@ Tài liệu này cung cấp toàn bộ mã nguồn ví dụ (Example Code) chi t
 ### 1.1. Khai báo Repository (`settings.gradle` hoặc root `build.gradle`)
 
 ```groovy
-allprojects {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://artifact.bytedance.com/repository/pangle/" }
         maven { url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea" }
-        maven { url = uri("https://android-sdk.is.com/") }
+        maven { url = uri("https://android-sdk.is.com/") } // IronSource
     }
 }
 ```
@@ -44,8 +59,8 @@ dependencies {
     // ERain-Studio Ads Library (Next-Gen)
     implementation project(':ads') // Hoặc implementation 'com.github.trongluan99:ERain-Studio:7.0.0'
 
-    // Google Mobile Ads Next-Gen SDK
-    implementation 'com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.5.0'
+    // Google Mobile Ads Next-Gen SDK 1.6.0
+    implementation 'com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.6.0'
 
     // AndroidX & UI
     implementation 'androidx.appcompat:appcompat:1.7.1'
@@ -55,14 +70,16 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    // In-App Review & Update (tùy chọn)
+    // In-App Review & Update
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
     implementation 'com.google.android.play:review:2.0.2'
     implementation 'com.google.android.play:review-ktx:2.0.2'
 }
 ```
 
 > [!IMPORTANT]
-> **Loại trừ thư viện cũ**: Nếu dự án có dùng các module bên thứ ba kéo theo `com.google.android.gms:play-services-ads`, hãy thêm `exclude group: 'com.google.android.gms', module: 'play-services-ads'` để tránh xung đột class.
+> **Loại trừ thư viện AdMob cũ**: GMA Next-Gen SDK đã đóng gói sẵn các class tương thích `com.google.android.gms.ads.mediation.*`. Nếu dự án có module bên thứ ba kéo theo `com.google.android.gms:play-services-ads`, hãy thêm `exclude group: 'com.google.android.gms', module: 'play-services-ads'` để tránh lỗi Duplicate Class.
 
 ### 1.3. Khai báo `AndroidManifest.xml`
 
@@ -71,7 +88,9 @@ dependencies {
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.APP_I" />
 
     <application
         android:name=".App"
@@ -101,12 +120,20 @@ dependencies {
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${ad_app_id}" />
 
-        <!-- Tắt Native Ad Debugger Overlay để tránh che UI -->
+        <!-- Tối ưu khởi tạo & tải quảng cáo song song theo chuẩn GMA Next-Gen -->
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+            android:value="true" />
+
+        <!-- Tắt Native Ad Debugger Overlay để tránh che UI ứng dụng -->
         <meta-data
             android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
             android:value="false" />
 
-        <!-- Facebook SDK (Nếu có dùng) -->
+        <!-- Facebook SDK (Nếu sử dụng) -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -158,11 +185,12 @@ class App : AdsMultiDexApplication() {
             facebookClientToken = getString(R.string.facebook_client_token)
             adjustTokenTiktok = getString(R.string.tiktok_token)
             
-            // Thiết lập ID Resume Ad (High Floor & Normal Floor)
+            // Cấu hình ID App Open Resume Ad (High Floor & Normal Floor)
             setIdAdResume(BuildConfig.ad_appopen_resume_high, BuildConfig.ad_appopen_resume)
             
-            // Bật/tắt thanh công cụ Debug Ads Inspector nổi (chỉ hiện trên bản Debug)
-            isShowFloatingDebugButton = true
+            // Bật/tắt thanh công cụ Debug Ads Inspector nổi (mặc định chỉ hiện trên bản Debug)
+            isShowFloatingDebugButton = BuildConfig.DEBUG
+            isShowAdDebugDialog = false
         }
         mERainAdConfig = config
 
@@ -190,11 +218,12 @@ class App : AdsMultiDexApplication() {
 ## 3. Màn Hình Chào Splash (Sequential High-Floor Ads)
 
 Cơ chế tải Splash tuần tự thông minh:
-1. Kiểm tra trạng thái VIP (`AppPurchase.isPurchased`): Nếu đã mua -> bỏ qua Splash vào thẳng `MainActivity`.
-2. Nếu chưa mua -> Tải tuần tự **High-Floor -> Normal Floor** với timeout an toàn.
-3. Khi người dùng bấm Home/ẩn app lúc quảng cáo chưa hiện xong -> Tự động khôi phục trong `onResume()`.
+1. **Kiểm tra trạng thái VIP (`AppPurchase.isPurchased`)**: Nếu đã mua -> bỏ qua Splash vào thẳng `MainActivity`.
+2. **Tải tuần tự High-Floor -> Normal Floor**: Ưu tiên tối đa eCPM với timeout an toàn.
+3. **Phục hồi an toàn**: Khi người dùng bấm Home/Recent apps lúc quảng cáo chưa hiện xong -> Tự động khôi phục hoặc điều hướng trong `onResume()`.
 
-### Kotlin (`SplashActivity.kt`):
+### 3.1. Interstitial Splash tuần tự (High Floor -> Normal Floor) (Khuyên dùng)
+
 ```kotlin
 package com.erain.module
 
@@ -219,7 +248,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Kiểm tra Billing trước khi quyết định tải quảng cáo
+        // 1. Chờ kết quả xác thực Billing trước khi quyết định tải quảng cáo
         AppPurchase.getInstance().setBillingListener(
             BillingListener { code ->
                 runOnUiThread {
@@ -239,7 +268,7 @@ class SplashActivity : AppCompatActivity() {
     private fun loadSplashAds() {
         if (isNavigated || isFinishing || isDestroyed) return
 
-        // Tải Splash Interstitial tuần tự: High Floor -> Normal Floor
+        // 2. Tải Splash Interstitial tuần tự: High Floor -> Normal Floor
         ERainAd.getInstance().loadSplashInterstitialAdsHighFloor(
             this,
             BuildConfig.ad_interstitial_splash, // ID High Floor
@@ -277,9 +306,31 @@ class SplashActivity : AppCompatActivity() {
         if (isNavigated || isFinishing || isDestroyed) return
         isNavigated = true
         startActivity(Intent(this, MainActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
 }
+```
+
+### 3.2. App Open Splash tuần tự (High Floor -> Normal Floor)
+
+Nếu sản phẩm ưu tiên định dạng **App Open** tại Splash thay vì Interstitial:
+
+```kotlin
+ERainAd.getInstance().loadOpenAppAdSplashHighFloor(
+    context = this,
+    idResumeSplashHigh = BuildConfig.ad_appopen_resume_high,
+    idResumeSplashNormal = BuildConfig.ad_appopen_resume,
+    timeDelay = 2000L,
+    timeOut = 30000L,
+    isShowAdIfReady = true,
+    adCallback = object : AdCallback() {
+        override fun onNextAction() {
+            super.onNextAction()
+            navigateToMain()
+        }
+    }
+)
 ```
 
 ---
@@ -307,7 +358,7 @@ ERainAd.getInstance().loadBanner(this, BuildConfig.ad_banner, object : AdCallbac
 
 ### 4.2. Collapsible Banner (Dính đáy / dính đỉnh, tối ưu eCPM)
 ```kotlin
-// Gravity có thể là AppConstant.CollapsibleGravity.BOTTOM hoặc TOP
+// Gravity: AppConstant.CollapsibleGravity.BOTTOM hoặc TOP
 ERainAd.getInstance().loadCollapsibleBanner(
     this,
     BuildConfig.ad_banner,
@@ -316,6 +367,21 @@ ERainAd.getInstance().loadCollapsibleBanner(
         override fun onAdLoaded() {
             super.onAdLoaded()
             Log.d("Banner", "Collapsible banner loaded")
+        }
+    }
+)
+```
+
+### 4.3. Inline Adaptive Banner (Cuộn trong RecyclerView / NestedScrollView)
+```kotlin
+ERainAd.getInstance().loadInlineBanner(
+    this,
+    BuildConfig.ad_banner,
+    "inline_feed_slot",
+    findViewById(R.id.fr_banner),
+    object : AdCallback() {
+        override fun onAdLoaded() {
+            super.onAdLoaded()
         }
     }
 )
@@ -392,7 +458,7 @@ Trong tất cả các file layout XML Native (`res/layout/native_large.xml`), th
 </com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdView>
 ```
 
-### 5.2. Cách 1: Tải & Hiển thị trực tiếp vào Layout
+### 5.2. Tải & Hiển thị trực tiếp vào Layout
 ```kotlin
 val frAds: FrameLayout = findViewById(R.id.fr_ads)
 val shimmerContainer: ShimmerFrameLayout = findViewById(R.id.shimmer_native)
@@ -417,7 +483,7 @@ ERainAd.getInstance().loadNativeAd(
 )
 ```
 
-### 5.3. Cách 2: Tải trước (Preload) và gán hiển thị sau
+### 5.3. Tải trước (Preload) và gán hiển thị sau
 ```kotlin
 private var preloadedNativeAd: ApNativeAd? = null
 
@@ -454,6 +520,22 @@ fun showPreloadedNativeAd() {
         )
     }
 }
+```
+
+### 5.4. FullScreen / Swipeable Native Ad Dialog
+```kotlin
+// Hiển thị quảng cáo Native dạng toàn màn hình hoặc lướt vuốt:
+ERainAd.getInstance().showFullScreenNativeAdDialog(
+    this,
+    BuildConfig.ad_native,
+    R.layout.layout_native_ad_full,
+    object : AdCallback() {
+        override fun onNextAction() {
+            super.onNextAction()
+            Log.d("Native", "FullScreen Native Dialog closed")
+        }
+    }
+)
 ```
 
 ---
@@ -534,11 +616,25 @@ ERainAd.getInstance().forceShowInterstitialPriority2(
 )
 ```
 
+### 6.3. Load & Show Interstitial ngay lập tức (1 chạm)
+```kotlin
+ERainAd.getInstance().loadAndShowInter(
+    this,
+    BuildConfig.ad_interstitial_splash,
+    object : AdCallback() {
+        override fun onNextAction() {
+            super.onNextAction()
+            Log.d("Inter", "Ad closed or failed, continue flow")
+        }
+    }
+)
+```
+
 ---
 
 ## 7. Rewarded Ads & Rewarded Interstitial
 
-### 7.1. Rewarded Ad
+### 7.1. Rewarded Ad (Load & Show tiêu chuẩn)
 ```kotlin
 private var mRewardedAd: RewardedAd? = null
 
@@ -576,6 +672,48 @@ fun showRewardAd() {
         }
     })
 }
+```
+
+### 7.2. Tải & Tự Động Hiển Thị Ngay (Auto Load & Show 1 chạm)
+> [!TIP]
+> Bổ sung mới nhất: Tự động kiểm tra IAP/VIP, tải quảng cáo và hiện ngay khi sẵn sàng mà không cần quản lý đối tượng `RewardedAd` thủ công:
+
+```kotlin
+ERainAd.getInstance().loadAndShowRewardAds(
+    this,
+    BuildConfig.ad_reward,
+    object : RewardCallback {
+        override fun onUserEarnedReward(rewardItem: RewardItem?) {
+            Log.d("Reward", "User earned reward: ${rewardItem?.amount} ${rewardItem?.type}")
+            // Mở khóa phần thưởng
+        }
+
+        override fun onRewardedAdClosed() {
+            Log.d("Reward", "Reward Ad closed")
+        }
+
+        override fun onRewardedAdFailedToShow(codeError: Int) {
+            Log.e("Reward", "Reward failed to show: $codeError")
+        }
+    }
+)
+```
+
+### 7.3. Rewarded Interstitial Ad
+```kotlin
+// 1. Khởi tạo Rewarded Interstitial:
+ERainAd.getInstance().initRewardInterstitialAd(this, BuildConfig.ad_reward_inter, object : AdCallback() {
+    override fun onRewardAdLoaded(rewardedAd: RewardedAd?) {
+        super.onRewardAdLoaded(rewardedAd)
+    }
+})
+
+// 2. Hiển thị:
+ERainAd.getInstance().showRewardInterstitial(this, rewardedInterstitialAd, object : RewardCallback {
+    override fun onUserEarnedReward(rewardItem: RewardItem?) {
+        Log.d("RewardInter", "Reward earned")
+    }
+})
 ```
 
 ---
@@ -631,7 +769,7 @@ fun destroyPipAd() {
 
 ## 9. Swipeable In-Feed Interstitial Ads
 
-Định dạng quảng cáo lướt vuốt toàn màn hình tự nhiên (phong cách Short Videos / Reels).
+Định dạng quảng cáo lướt vuốt toàn màn hình tự nhiên (phong cách Short Videos / Reels / TikTok).
 
 ```kotlin
 private var mSwipeableAd: ApSwipeableAd? = null
@@ -670,14 +808,14 @@ fun showSwipeableFeedDialog() {
 
 ## 10. In-App Purchase & Subscription (Google Play Billing 9.0)
 
-Thư viện tích hợp Google Play Billing 9.0 có cơ chế tự động cache trạng thái mua hàng vào SharedPreferences để mở khóa app tức thì:
+Thư viện tích hợp Google Play Billing 9.0 có cơ chế tự động cache trạng thái mua hàng vào SharedPreferences để mở khóa app tức thì và không phụ thuộc độ trễ mạng:
 
 ```kotlin
 // 1. Đăng ký nhận sự kiện mua hàng:
 AppPurchase.getInstance().setPurchaseListener(object : PurchaseListener {
     override fun onProductPurchased(productId: String?, transactionDetails: String?) {
         Log.d("Billing", "Mua hàng thành công: $productId")
-        // Tự động vô hiệu hóa toàn bộ quảng cáo trong phiên làm việc
+        // Tự động vô hiệu hóa toàn bộ quảng cáo trong ứng dụng
     }
 
     override fun displayErrorMessage(errorMsg: String?) {
@@ -699,26 +837,97 @@ AppPurchase.getInstance().subscribe(this, "sub_vip_monthly")
 if (AppPurchase.getInstance().isPurchased) {
     // Ẩn toàn bộ nút mua và quảng cáo
 }
+
+// 5. Mở BottomSheet Test Billing (dành cho Tester / Developer):
+AppPurchase.getInstance().showPurchaseDevBottomSheet(this)
 ```
 
 ---
 
-## 11. Công Cụ Debug Ads & Bidding Inspector (ERainAdDebugManager)
+## 11. Quản Lý UMP Consent (GDPR) & In-App Update
 
-Thư viện tích hợp sẵn bảng điều khiển kiểm tra quảng cáo thời gian thực:
+Tính năng chuyên biệt tích hợp sẵn trong ERain-Studio để tuân thủ chính sách bảo mật Google Play & EEA/UK Consent:
 
-* **Tự động kích hoạt**: Khi chạy bản `debug` (`isVariantDev = true`), nút nổi hình `🐞` sẽ tự động hiển thị trên màn hình.
-* **Mở Debug Inspector bằng code**:
+### 11.1. UMP Privacy Consent (GDPR & Ad Privacy)
 ```kotlin
-ERainAd.getInstance().openDebugInspector(this)
+import com.ads.module.ump.ITGAdConsent
+import com.ads.module.ump.IAdConsentCallBack
+
+// Tự động kiểm tra vị trí người dùng (EEA/UK) và hiển thị form đồng ý quảng cáo cá nhân hóa:
+ITGAdConsent.loadAndShowConsent(
+    isShowDialog = true,
+    callback = object : IAdConsentCallBack {
+        override fun onConsentSuccess() {
+            Log.d("UMP", "Consent form completed -> Bắt đầu tải quảng cáo")
+            // Gọi loadSplashAds() hoặc khởi tạo quảng cáo
+        }
+
+        override fun onConsentError(error: String?) {
+            Log.e("UMP", "Consent error: $error -> Vẫn cho phép tiếp tục luồng")
+        }
+    }
+)
 ```
+
+### 11.2. In-App Update (Cập nhật trực tiếp không rời app)
+```kotlin
+import com.ads.module.ump.ITGUpdateManager
+import com.ads.module.ump.IUpdateInstanceCallback
+
+ITGUpdateManager.checkForUpdates(
+    activity = this,
+    iUpdateInstanceCallback = object : IUpdateInstanceCallback {
+        override fun onUpdateAvailable() {
+            Log.d("Update", "Có phiên bản cập nhật mới trên Google Play!")
+        }
+
+        override fun onUpdateUnavailable() {
+            Log.d("Update", "Ứng dụng đang ở bản mới nhất")
+        }
+    }
+)
+```
+
+---
+
+## 12. Công Cụ Debug Ads & Bidding Inspector (ERainAdDebugManager)
+
+Thư viện tích hợp sẵn bảng điều khiển kiểm tra quảng cáo thời gian thực chuẩn Next-Gen:
+
+* **Tự động kích hoạt**: Khi chạy bản `debug` (`isVariantDev = true`), nút nổi hình `🐞` sẽ tự động hiển thị trên góc màn hình.
+* **Cử chỉ mới của Floating Badge**:
+  * Chạm và giữ để kéo di chuyển đến vị trí bất kỳ trên màn hình.
+  * Kéo xuống đáy màn hình (`drag-to-bottom-to-dismiss` với vùng thùng rác màu đỏ) để ẩn badge khi không cần dùng.
+* **Mở Debug Console bằng code**:
+  ```kotlin
+  ERainAd.getInstance().openDebugInspector(this)
+  ```
 * **Bật/Tắt chế độ Debug Inspector**:
-```kotlin
-// Bật debug nhưng ẩn nút nổi:
-ERainAd.getInstance().setEnableDebugMode(enable = true, showFloatingButton = false)
-```
-* **Các thông tin hiển thị trên Inspector**:
-  * Trạng thái chi tiết từng vị trí quảng cáo: `WAITING`, `LOADING`, `LOADED`, `SHOWN`, `FAILED`.
-  * Thời gian tải (Latency tính bằng mili-giây).
-  * Adapter mediation thắng phiên đấu giá Real-Time Bidding (`AppLovin`, `Vungle`, `Meta`, `Pangle`, v.v.).
-  * Giá trị eCPM và doanh thu thực nhận trên mỗi lượt hiển thị.
+  ```kotlin
+  // Bật debug nhưng ẩn nút nổi:
+  ERainAd.getInstance().setEnableDebugMode(enable = true, showFloatingButton = false)
+  ```
+* **Các tính năng nổi bật trong Console**:
+  * **Settings List Toggle**: Cho phép bật/tắt nhanh Test Ad IDs, Mock Responses, Bidding Latency Simulation, Force Floor Fallback,... ngay trên thiết bị thực.
+  * **Tab 📊 Lịch sử**: Theo dõi Live Request Traces, trạng thái quảng cáo (`WAITING`, `LOADING`, `LOADED`, `SHOWN`, `PAID`, `FAILED`), độ trễ Latency ms, eCPM và doanh thu nhận được.
+  * **Tab 🤝 Bidding**: Giám sát trạng thái khởi tạo thời gian thực của 8 mạng đối tác Real-Time Bidding (`AppLovin`, `Vungle`, `Meta`, `Pangle`, `Mintegral`, `Unity`, `IronSource`, `Google AdMob`).
+* **Mở GMA Next-Gen Ad Inspector gốc**:
+  ```kotlin
+  Admob.getInstance().openAdInspector(this, object : AdCallback() {
+      override fun onNextAction() {
+          Log.d("AdInspector", "GMA Ad Inspector closed")
+      }
+  })
+  ```
+
+---
+
+## 13. Bảng Mã Lỗi & Khắc Phục (Troubleshooting)
+
+| Mã lỗi / Hiện tượng | Nguyên nhân | Cách khắc phục |
+| :--- | :--- | :--- |
+| **Duplicate class `com.google.android.gms.ads.*`** | Thư viện bên thứ ba kéo theo `play-services-ads` cũ. | Thêm `exclude group: 'com.google.android.gms', module: 'play-services-ads'` vào các adapter mediation trong `build.gradle`. |
+| **`mERainAdConfig` null-safety error** | Dự án Kotlin truy cập field cấu hình. | Lớp `AdsMultiDexApplication` đã đổi sang `protected lateinit var mERainAdConfig: ERainAdConfig`. Hãy gọi `super.onCreate()` trước khi cấu hình. |
+| **Splash không khôi phục khi ẩn/hiện app** | User ấn Home lúc Splash đang tải. | Sử dụng `loadSplashInterstitialAdsHighFloor` với cờ `showSplashIfReady = true`. Cơ chế timeout và single-dispatch sẽ tự động xử lý. |
+| **Native Ad không hiển thị media** | Thẻ XML dùng sai package của Google AdMob cũ. | Thẻ gốc bắt buộc là `com.google.android.libraries.ads.mobile.sdk.nativead.NativeAdView` và media là `...MediaView`. |
+| **Test ID Alert xuất hiện trên màn hình** | ID quảng cáo sử dụng là ID test mặc định của Google. | Đây là cảnh báo an toàn trong môi trường Develop. Khi chuyển sang `ENVIRONMENT_PRODUCTION` với ID thật sẽ tự biến mất. |
