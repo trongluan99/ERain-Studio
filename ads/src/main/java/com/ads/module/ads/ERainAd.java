@@ -400,6 +400,97 @@ public class ERainAd {
         Admob.getInstance().forceShowInterstitial(context, mInterstitialAd.getInterstitialAd(), adCallback);
     }
 
+    public void forceShowInterstitialNotDelay(@NonNull Context context, ApInterstitialAd mInterstitialAd,
+                                              @NonNull final AdCallback callback, boolean shouldReloadAds) {
+        if (mInterstitialAd == null || mInterstitialAd.isNotReady()) {
+            callback.onNextAction();
+            return;
+        }
+        AdCallback adCallback = new AdCallback() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                callback.onAdClosed();
+                if (shouldReloadAds) {
+                    Admob.getInstance().getInterstitialAds(context, mInterstitialAd.getInterstitialAd().getAdUnitId(), new AdCallback() {
+                        @Override
+                        public void onInterstitialLoad(@Nullable InterstitialAd interstitialAd) {
+                            super.onInterstitialLoad(interstitialAd);
+                            mInterstitialAd.setInterstitialAd(interstitialAd);
+                            callback.onInterstitialLoad(mInterstitialAd.getInterstitialAd());
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@Nullable LoadAdError i) {
+                            super.onAdFailedToLoad(i);
+                            mInterstitialAd.setInterstitialAd(null);
+                            callback.onAdFailedToLoad(i);
+                        }
+
+                        @Override
+                        public void onAdFailedToShow(@Nullable AdError adError) {
+                            super.onAdFailedToShow(adError);
+                            callback.onAdFailedToShow(adError);
+                        }
+
+                    });
+                } else {
+                    mInterstitialAd.setInterstitialAd(null);
+                }
+            }
+
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                callback.onNextAction();
+            }
+
+            @Override
+            public void onAdFailedToShow(@Nullable AdError adError) {
+                super.onAdFailedToShow(adError);
+                callback.onAdFailedToShow(adError);
+                if (shouldReloadAds) {
+                    Admob.getInstance().getInterstitialAds(context, mInterstitialAd.getInterstitialAd().getAdUnitId(), new AdCallback() {
+                        @Override
+                        public void onInterstitialLoad(@Nullable InterstitialAd interstitialAd) {
+                            super.onInterstitialLoad(interstitialAd);
+                            mInterstitialAd.setInterstitialAd(interstitialAd);
+                            callback.onInterstitialLoad(mInterstitialAd.getInterstitialAd());
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@Nullable LoadAdError i) {
+                            super.onAdFailedToLoad(i);
+                            callback.onAdFailedToLoad(i);
+                        }
+
+                        @Override
+                        public void onAdFailedToShow(@Nullable AdError adError) {
+                            super.onAdFailedToShow(adError);
+                            callback.onAdFailedToShow(adError);
+                        }
+
+                    });
+                } else {
+                    mInterstitialAd.setInterstitialAd(null);
+                }
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                callback.onAdClicked();
+            }
+
+            @Override
+            public void onInterstitialShow() {
+                super.onInterstitialShow();
+                callback.onInterstitialShow();
+            }
+        };
+        Admob.getInstance().forceShowInterstitial(context, mInterstitialAd.getInterstitialAd(), adCallback);
+    }
+
     public void loadNativeAdResultCallback(final Activity activity, String id,
                                            int layoutCustomNative, AdCallback callback) {
         Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
